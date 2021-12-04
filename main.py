@@ -13,16 +13,23 @@ def on_button_pressed_b():
     music.play_tone(262, Time)
 input.on_button_pressed(Button.B, on_button_pressed_b)
 
-def on_logo_pressed():
+def on_logo_touched():
     global Guess1
     Guess1 = control.millis()
-input.on_logo_event(TouchButtonEvent.PRESSED, on_logo_pressed)
+input.on_logo_event(TouchButtonEvent.TOUCHED, on_logo_touched)
 
 def on_logo_released():
-    global Guess2, Result
+    global Guess1, Guess2, Result, Time
     Guess2 = control.millis()
     Result = Guess2 - Guess1
     led.plot_bar_graph(Result, Time)
-    basic.pause(5000)
+    basic.pause(500)
+    if led.point(4, 0):
+        victory()
+    basic.pause(2000)
     basic.clear_screen()
 input.on_logo_event(TouchButtonEvent.RELEASED, on_logo_released)
+
+def victory():
+    music.play_melody("C D E F", 120)
+    basic.show_icon(IconNames.YES)
